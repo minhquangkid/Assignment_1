@@ -1,8 +1,19 @@
 "use strict";
 import React, { Component } from "react"; // phải có dòng này mới dùng các component được
+import { useState } from "react";
 
 //console.log(STAFFS);
 function StaffList(props) {
+  const [selected, setSelected] = useState(null);
+
+  const renderTable = function (select) {
+    if (select != null) {
+      return <p>{select.name}</p>;
+    } else {
+      return <p>Bấm vào tên nhân viên để xem thông tin</p>;
+    }
+  };
+
   const mystyle = {
     boxSizing: "border-box",
     boderSize: "0.5px",
@@ -14,7 +25,9 @@ function StaffList(props) {
   const list = props.nhanvien.map((e) => {
     return (
       <div className="col-12 col-md-6 col-lg-4">
-        <p style={mystyle}>{e.name}</p>
+        <p onClick={() => setSelected(e)} style={mystyle}>
+          {e.name}
+        </p>
       </div>
     );
   });
@@ -22,7 +35,7 @@ function StaffList(props) {
   return (
     <React.Fragment>
       <div className="row">{list}</div>
-      <div>Bấm vào tên nhân viên để xem thông tin</div>
+      <div className="row">{renderTable(selected)}</div>
     </React.Fragment>
   );
 }
