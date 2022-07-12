@@ -1,19 +1,22 @@
 "use strict";
 import React, { Component } from "react"; // phải có dòng này mới dùng các component được
 import { useState } from "react";
-
+import dateFormat, { masks } from "dateformat";
 //console.log(STAFFS);
 function StaffList(props) {
   const [selected, setSelected] = useState(null);
-
+  const transform = function (day) {
+    let a = String(new Date(day));
+    return dateFormat(a, "dd/mm/yyyy");
+  };
   const renderTable = function (select) {
     if (select != null) {
       return (
         <div className="col-12 col-md-6 col-lg-4">
           <div style={mystyle}>
             <h4>Họ và tên : {select.name}</h4>
-            <p>Ngày sinh : {select.doB}</p>
-            <p>Ngày vào công ty : {select.startDate}</p>
+            <p>Ngày sinh : {transform(select.doB)}</p>
+            <p>Ngày vào công ty : {transform(select.startDate)}</p>
             <p>Phòng ban : {select.department.name}</p>
             <p>Số ngày nghỉ còn lại : {select.annualLeave}</p>
             <p>Số ngày đã làm thêm : {select.overTime}</p>
