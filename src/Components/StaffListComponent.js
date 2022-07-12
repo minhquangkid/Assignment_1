@@ -7,24 +7,22 @@ function StaffList(props) {
     boxSizing: "border-box",
     boderSize: "0.5px",
     borderStyle: "solid",
-    margin: "5px 5px",
+    borderRadius: "5px",
+    // margin: "5px 5px",
     padding: "5px",
   };
   const list = props.nhanvien.map((e) => {
     return (
-      <div className="col-12 col-md-4 col-lg-3" style={mystyle}>
-        {e.name}
+      <div className="col-12 col-md-6 col-lg-4">
+        <p style={mystyle}>{e.name}</p>
       </div>
     );
   });
-  // nếu ta dùng chính xác col-md-6 col-lg-4 thì khi đó border của từng chữ trong cột sẽ sát khít nhau, sau đó ta lại dùng margin để chúng dãn ra thì ta vô tình làm sai lệch thông số của các cột nên responsive không còn đúng nữa, vì vậy ta cho số cột giảm đi để trừ hao
+  // phải để e.name trong tag <p></p> vì nếu để trực tiếp ở trong div thì các border sẽ dính vào nhau
   return (
     <React.Fragment>
-      <div className="row">
-        {/* <p>{STAFFS[0].name}</p> */}
-        {list}
-      </div>
-      <div></div>
+      <div className="row">{list}</div>
+      <div>Bấm vào tên nhân viên để xem thông tin</div>
     </React.Fragment>
   );
 }

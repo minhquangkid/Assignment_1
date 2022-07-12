@@ -8,10 +8,11 @@ class App extends Component {
     return (
       <div className="App">
         <Navbar dark color="primary">
-          <div className="fluid">
+          <div className="container">
             <NavbarBrand href="/">Ứng dụng quản lý nhân sự</NavbarBrand>
           </div>
         </Navbar>
+        <br></br>
         <div className="container">
           <StaffList nhanvien={STAFFS} />
         </div>
