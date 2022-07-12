@@ -36,9 +36,15 @@ function StaffList(props) {
     // margin: "5px 5px",
     padding: "5px",
   };
+
+  const tinhtoan = function (num) {
+    let a = 12 / Number(num);
+    return `col-12 col-md-6 col-lg-${a}`;
+  };
+
   const list = props.nhanvien.map((e) => {
     return (
-      <div className="col-12 col-md-6 col-lg-4">
+      <div className={tinhtoan(props.column)}>
         <p onClick={() => setSelected(e)} style={mystyle}>
           {e.name}
         </p>
@@ -48,7 +54,7 @@ function StaffList(props) {
   // phải để e.name trong tag <p></p> vì nếu để trực tiếp ở trong div thì các border sẽ dính vào nhau
   return (
     <React.Fragment>
-      <div className="row">{list}</div>
+      <div className="row ">{list}</div>
       <div className="row">{renderTable(selected)}</div>
     </React.Fragment>
   );
