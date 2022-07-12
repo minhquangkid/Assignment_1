@@ -8,7 +8,18 @@ function StaffList(props) {
 
   const renderTable = function (select) {
     if (select != null) {
-      return <p>{select.name}</p>;
+      return (
+        <div className="col-12 col-md-6 col-lg-4">
+          <div style={mystyle}>
+            <h4>Họ và tên : {select.name}</h4>
+            <p>Ngày sinh : {select.doB}</p>
+            <p>Ngày vào công ty : {select.startDate}</p>
+            <p>Phòng ban : {select.department.name}</p>
+            <p>Số ngày nghỉ còn lại : {select.annualLeave}</p>
+            <p>Số ngày đã làm thêm : {select.overTime}</p>
+          </div>
+        </div>
+      );
     } else {
       return <p>Bấm vào tên nhân viên để xem thông tin</p>;
     }
