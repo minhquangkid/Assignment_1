@@ -47,6 +47,7 @@ class App extends Component {
           <select
             name="col"
             onChange={(e) => this.updateInput(e)}
+            // onChange={this.change} nếu muốn tách riêng hàm ra ngoài thì mở comment này và ở trên
             defaultValue="3"
             style={{ padding: "5px" }}
           >
