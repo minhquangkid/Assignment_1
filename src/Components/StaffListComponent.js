@@ -4,72 +4,87 @@ import { useState } from "react"; // dùng để dùng Hook
 import dateFormat, { masks } from "dateformat";
 //console.log(STAFFS);
 
-function StaffList(props) {
-  const [selected, setSelected] = useState(null); //dùng hook, tạo biến state giống bên class là selected, và hàm để thay đổi nó là setSelected, khởi tạo giá trị ban đầu của selected là null
+class StaffList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: null,
+    };
+  }
 
-  const transform = function (day) {
-    let a = String(new Date(day)); // phải đưa về định dạng của new Day trước rồi mới dùng dateFormat được (xem trong hướng dẫn của dateFormat)
-    return dateFormat(a, "dd/mm/yyyy");
-  };
+  setSelected(e) {
+    this.setState({ selected: e }); // phải có cặp dấu {}
+  }
+  // một vài trường hợp ngoại lệ như hàm setSelected này được đặt nằm ở vị trí giữa constructor và render (cần tìm hiểu thêm về vấn đề này)
 
-  const renderTable = function (select) {
-    if (select != null) {
-      return (
-        <div className="col-12 col-md-6 col-lg-4">
-          <div style={mystyle}>
-            <h4>Họ và tên : {select.name}</h4>
-            <p>Ngày sinh : {transform(select.doB)}</p>
-            <p>Ngày vào công ty : {transform(select.startDate)}</p>
-            <p>Phòng ban : {select.department.name}</p>
-            <p>Số ngày nghỉ còn lại : {select.annualLeave}</p>
-            <p>Số ngày đã làm thêm : {select.overTime}</p>
+  //đây là render trong cấu trúc chính của class component, mọi code javascript đều phải nằm giữa render này và return
+  render() {
+    const transform = function (day) {
+      let a = String(new Date(day)); // phải đưa về định dạng của new Day trước rồi mới dùng dateFormat được (xem trong hướng dẫn của dateFormat)
+      return dateFormat(a, "dd/mm/yyyy");
+    };
+
+    const renderTable = function (select) {
+      if (select != null) {
+        return (
+          <div className="col-12 col-md-6 col-lg-4">
+            <div style={mystyle}>
+              <h4>Họ và tên : {select.name}</h4>
+              <p>Ngày sinh : {transform(select.doB)}</p>
+              <p>Ngày vào công ty : {transform(select.startDate)}</p>
+              <p>Phòng ban : {select.department.name}</p>
+              <p>Số ngày nghỉ còn lại : {select.annualLeave}</p>
+              <p>Số ngày đã làm thêm : {select.overTime}</p>
+            </div>
           </div>
+        );
+      } else {
+        return <h4>Bấm vào tên nhân viên để xem thông tin</h4>;
+      }
+    }; // mặc dù chưa import DEPARTMENTS nhưng nó vẫn sài được do có sự liên kết với STAFFS
+
+    const mystyle = {
+      boxSizing: "border-box",
+      boderSize: "0.5px",
+      borderStyle: "solid",
+      borderRadius: "5px",
+      // margin: "5px 5px",
+      padding: "5px",
+    };
+
+    // hàm tính toán để hiển thị số cột theo yêu cầu
+    const tinhtoan = function (num) {
+      let a = 12 / Number(num);
+      return `col-12 col-md-6 col-lg-${a}`;
+    };
+
+    const list = this.props.nhanvien.map((e) => {
+      return (
+        <div className={tinhtoan(this.props.column)}>
+          <p onClick={() => this.setSelected(e)} style={mystyle}>
+            {e.name}
+          </p>
         </div>
       );
-    } else {
-      return <h4>Bấm vào tên nhân viên để xem thông tin</h4>;
-    }
-  }; // mặc dù chưa import DEPARTMENTS nhưng nó vẫn sài được do có sự liên kết với STAFFS
+    });
+    // hàm setSelected sẽ gán giá trị truyền vào e cho state là selected (tương đương câu lệnh selected = e)
+    // phải để e.name trong tag <p></p> vì nếu để trực tiếp ở trong div thì các border sẽ dính vào nhau
 
-  const mystyle = {
-    boxSizing: "border-box",
-    boderSize: "0.5px",
-    borderStyle: "solid",
-    borderRadius: "5px",
-    // margin: "5px 5px",
-    padding: "5px",
-  };
-
-  // hàm tính toán để hiển thị số cột theo yêu cầu
-  const tinhtoan = function (num) {
-    let a = 12 / Number(num);
-    return `col-12 col-md-6 col-lg-${a}`;
-  };
-
-  const list = props.nhanvien.map((e) => {
+    // đây là return của render trong cấu trúc gốc của class component, mọi code javascript phải nằm giữa render và return
     return (
-      <div className={tinhtoan(props.column)}>
-        <p onClick={() => setSelected(e)} style={mystyle}>
-          {e.name}
-        </p>
-      </div>
+      <React.Fragment>
+        <div className="row" style={{ backgroundColor: "pink" }}>
+          {list}
+        </div>
+        <div
+          className="row justify-content-center"
+          style={{ backgroundColor: "yellow" }}
+        >
+          {renderTable(this.state.selected)}
+        </div>
+      </React.Fragment>
     );
-  });
-  // hàm setSelected sẽ gán giá trị truyền vào e cho state là selected (tương đương câu lệnh selected = e)
-  // phải để e.name trong tag <p></p> vì nếu để trực tiếp ở trong div thì các border sẽ dính vào nhau
-  return (
-    <React.Fragment>
-      <div className="row" style={{ backgroundColor: "pink" }}>
-        {list}
-      </div>
-      <div
-        className="row justify-content-center"
-        style={{ backgroundColor: "yellow" }}
-      >
-        {renderTable(selected)}
-      </div>
-    </React.Fragment>
-  );
+  }
 }
 // state là selected sẽ cập nhật lại mỗi khi có sự kiện tác động vào nó (xem lại định nghĩa của nó trên google cho chắc :))
 
