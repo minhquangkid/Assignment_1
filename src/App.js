@@ -11,7 +11,7 @@ class App extends Component {
     this.state = {
       input: 3,
     };
-    this.updateInput = this.updateInput.bind(this);
+    // this.change = this.updateInput.bind(this);
     // this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -19,6 +19,7 @@ class App extends Component {
     this.setState({ input: event.target.value });
     console.log("Your input value is: " + this.state.input);
   }
+  // gán cho giá trị mới của state là giá trị của e truyền vào
 
   // handleSubmit() {
   //   console.log("Your input value is: " + this.state.input);
@@ -40,10 +41,15 @@ class App extends Component {
             onChange={this.updateInput}
             placeholder="nhập số cột"
           ></input> */}
-          <label htmlFor="col">
-            Chọn số cột hiển thị trên màn hình Desktop :{" "}
+          <label htmlFor="col" style={{ fontSize: "1.5rem" }}>
+            Chọn số cột hiển thị trên màn hình Desktop :
           </label>
-          <select name="col" onChange={this.updateInput} defaultValue="3">
+          <select
+            name="col"
+            onChange={(e) => this.updateInput(e)}
+            defaultValue="3"
+            style={{ padding: "5px" }}
+          >
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -65,5 +71,7 @@ class App extends Component {
     );
   }
 }
+// khi thay đổi giá trị trên select box thì giá trị mới là e sẽ được truyền vào hàm updateInput của class này thông qua event onchange
+// ở StaffList tạo ra 2 thuộc tính mới cho props là nhanvien và column để StaffListComponent có thể chạy được
 
 export default App;
